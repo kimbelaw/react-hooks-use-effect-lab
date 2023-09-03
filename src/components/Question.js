@@ -1,11 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
-  // add useEffect code
+  useEffect(() => {
+    let timer;
+
+    // Start the countdown timer when the component mounts
+    if (timeRemaining > 0) {
+      timer = setTimeout(() => {
+        // Decrease the timeRemaining by 1 every second
+        setTimeRemaining((prevTime) => prevTime - 1);
+      }, 1000);
+    } else {
+      // When timeRemaining is already 0 (component re-renders), call onAnswered(false)
+      onAnswered(false);
+    }
+
+    // Cleanup function to clear the timer when the component unmounts
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [timeRemaining, onAnswered]);
 
   function handleAnswer(isCorrect) {
+    // Reset the timer and call onAnswered with the result
     setTimeRemaining(10);
     onAnswered(isCorrect);
   }
@@ -30,3 +49,4 @@ function Question({ question, onAnswered }) {
 }
 
 export default Question;
+

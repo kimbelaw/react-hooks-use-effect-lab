@@ -4,15 +4,15 @@ import quiz from "../data/quiz";
 
 function App() {
   const [questions, setQuestions] = useState(quiz);
-  const [currentQuestionId, setCurrentQuestion] = useState(1);
+  const [currentQuestionId, setCurrentQuestionId] = useState(0); // Change to start from the first question
   const [score, setScore] = useState(0);
-  const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+  const currentQuestion = questions[currentQuestionId];
 
   function handleQuestionAnswered(correct) {
-    if (currentQuestionId < questions.length) {
-      setCurrentQuestion((currentQuestionId) => currentQuestionId + 1);
+    if (currentQuestionId < questions.length - 1) {
+      setCurrentQuestionId((currentQuestionId) => currentQuestionId + 1);
     } else {
-      setCurrentQuestion(null);
+      setCurrentQuestionId(null);
     }
     if (correct) {
       setScore((score) => score + 1);
